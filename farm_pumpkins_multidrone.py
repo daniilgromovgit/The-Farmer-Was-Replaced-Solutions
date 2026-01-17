@@ -25,6 +25,5 @@ while True:
 		while num_drones() != 1:
 			pass
 		harvest()
-	else:
-		spawn_drone(farm_pumpkins_multidrone)
-		move(East)
+	spawn_drone(farm_pumpkins_multidrone)
+	move(East)
