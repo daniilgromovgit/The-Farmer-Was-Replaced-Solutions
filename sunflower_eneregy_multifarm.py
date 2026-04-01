@@ -13,28 +13,21 @@ def make_get_energy(target_petals):
 				harvest()
 			move(North)
 	return get_energy
-	
+
 while True:
-	flag = True
 	if STATE == 'planting':
 		if spawn_drone(plant_energy):
 			move(East)
-	if get_pos_x() == 0 and flag:
-		STATE = 'pausing'
-	if STATE == 'pausing':
+	if get_pos_x() == 0:
+		STATE = 'growing'
+	if STATE == 'growing':
 		start = get_time()
-		time_passed = 0
-		while time_passed < 6.4:
-			time_passed = get_time() - start
+		while get_time() - start < 6.4:
+			pass
 		STATE = 'harvesting'
-		flag = False
 	if STATE == 'harvesting':
 		for petal in range(15, 6, -1):
 			for _ in range(get_world_size()):
 				if spawn_drone(make_get_energy(petal)):
 					move(East)
 		STATE = 'planting'
-		flag = True
-			
-
-	
