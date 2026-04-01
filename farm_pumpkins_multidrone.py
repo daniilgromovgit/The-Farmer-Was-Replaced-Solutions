@@ -21,7 +21,6 @@ def farm_pumpkins_multidrone():
 		
 while True:
 	if num_drones() == max_drones():
-		farm_pumpkins_multidrone()
 		while num_drones() != 1:
 			pass
 		harvest()
