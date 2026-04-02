@@ -1,3 +1,13 @@
+def run_stage(task, move_dir, next_stage, is_ready):
+		spawn_drone(task)
+		move(move_dir)
+		if num_drones() == max_drones():
+			while num_drones() != 1:
+				pass
+			if is_ready:
+				harvest()
+			return next_stage
+		return None
 def plant_cacti_multidrone():
 	world_size = get_world_size()
 	for _ in range(world_size):
@@ -38,30 +48,31 @@ def sort_cacti_axis(axis):
 				start += 1
 				direction = forward
 	return sort_cacti
+STAGES = {
+	'planting': (
+		plant_cacti_multidrone,
+		East,
+		'vertical_sort',
+		False
+	),
+	'vertical_sort': (
+		sort_cacti_axis('vertical'),
+		East,
+		'horizontal_sort',
+		False
+	),
+	'horizontal_sort': (
+		sort_cacti_axis('horizontal'),
+		North,
+		'planting',
+		True
+	),
+}
 STAGE = 'planting'
 clear()
 set_world_size(max_drones() - 1)
 while True:
-	def run_stage(task, move_dir, next_stage):
-		spawn_drone(task)
-		move(move_dir)
-		
-		if num_drones() == max_drones():
-			while num_drones() != 1:
-				pass
-			return next_stage
-		return None
-	
-	if STAGE == 'planting':
-		next_stage = run_stage(plant_cacti_multidrone, East, 'vertical_sort')
-		if next_stage:
-			STAGE = next_stage
-	elif STAGE == 'vertical_sort':
-		next_stage = run_stage(sort_cacti_axis('vertical'), East, 'horizontal_sort')
-		if next_stage:
-			STAGE = next_stage
-	elif STAGE == 'horizontal_sort':
-		next_stage = run_stage(sort_cacti_axis('horizontal'), North, 'planting')
-		if next_stage:
-			STAGE = next_stage
-			harvest()
+	task, move_dir, next_action, is_ready = STAGES[STAGE]
+	next_stage = run_stage(task, move_dir, next_action, is_ready)
+	if next_stage:
+		STAGE = next_stage
