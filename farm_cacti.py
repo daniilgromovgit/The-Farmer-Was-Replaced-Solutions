@@ -15,13 +15,13 @@ def farm_cacti():
 			for _ in range(world_size):
 				x, y = get_pos_x(), get_pos_y()
 				edge = world_size - 1
-				if measure(East) < measure():
-					swap(East)
-					if x != edge:
+				if x < edge:	
+					if measure(East) < measure():
+						swap(East)
 						is_sorted = False
-				if measure(North) < measure():
-					swap(North)
-					if y != edge:
+				if y < edge:
+					if measure(North) < measure():
+						swap(North)
 						is_sorted = False
 				move(North)
 			move(East)
