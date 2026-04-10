@@ -1,26 +1,32 @@
+OPPOSITE = {
+	East: West,
+	West: East,
+	North: South,
+	South: North
+}
+
 def abs(value):
 		if value < 0:
 			return -value
 		return value
 
-def move_axis(distance, forward, backward, world_size=None):
-	if world_size == None: # is недоступен
-		world_size = get_world_size()
+def get_state():
+	return {
+		'x': get_pos_x(),
+		'y': get_pos_y(),
+		'world_size': get_world_size()
+	}
+
+def move_axis(distance, forward, backward, world_size):
 	if distance <= world_size // 2:
 		for _ in range(distance):
 			move(forward)
 	else:
-		for _ in range(world_size-distance):
+		for _ in range(world_size - distance):
 			move(backward)
-def move_to_position(x, y):
-	OPPOSITE = {
-		East: West,
-		West: East,
-		North: South,
-		South: North
-	}
-	world_size = get_world_size()
-	dx = (x - get_pos_x()) % world_size
-	dy = (y - get_pos_y()) % world_size
-	move_axis(dx, East, OPPOSITE[East], world_size)
-	move_axis(dy, North, OPPOSITE[North], world_size)
+
+def move_to_position(target_x, target_y, state):	
+	dx = (target_x - state['x']) % state['world_size']
+	dy = (target_y - state['y']) % state['world_size']
+	move_axis(dx, East, OPPOSITE[East], state['world_size'])
+	move_axis(dy, North, OPPOSITE[North], state['world_size'])
