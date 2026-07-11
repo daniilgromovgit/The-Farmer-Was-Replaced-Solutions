@@ -23,8 +23,10 @@ def serpentine_rectangle(actions=None, columns=None, rows=None):
 		columns = get_world_size()
 	if rows == None:
 		rows = get_world_size()
+	path = []
 	for i in range(columns):
 		for _ in range(rows):
+			path.append((get_pos_x(), get_pos_y()))
 			if actions:
 				for action in actions:
 					action()
@@ -33,7 +35,9 @@ def serpentine_rectangle(actions=None, columns=None, rows=None):
 			else:
 				move(South)
 		move(East)
-		
+	return path
+	
+
 def prepare_terrain(Entity):
 	if get_ground_type() not in constants.ENTITIES_LIMITS[Entity]['valid_terrain']:
 		till()

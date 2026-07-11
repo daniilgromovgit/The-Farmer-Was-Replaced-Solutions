@@ -1,9 +1,9 @@
 import single_drone
 PLANTS = [
 
-	Entities.Bush,
+	#Entities.Tree,
 	Entities.Carrot,
-	Entities.Grass,
+	#Entities.Grass,
 ]
 while True:
 	single_drone.farm_diagonal_pattern(PLANTS)
