@@ -1,11 +1,7 @@
 OPPOSITE = {East: West, West: East, North: South, South: North}
 DEFAULT_PLANTS = [
-	Entities.Cactus,
-	Entities.Sunflower,
-	Entities.Bush,
 	Entities.Carrot,
 	Entities.Grass,
-	Entities.Pumpkin,
 	Entities.Tree,
 ]
 # ==========================
@@ -58,5 +54,5 @@ ENTITIES_LIMITS = {
 		"valid_terrain": [Grounds.Grassland, Grounds.Soil],
 	},
 }
-#MAX_DRONES = max_drones()
-#WORLD_SIZE_FOR_MULTIDRONE = MAX_DRONES - 1
+# MAX_DRONES = max_drones()
+# WORLD_SIZE_FOR_MULTIDRONE = MAX_DRONES - 1

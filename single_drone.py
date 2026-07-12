@@ -1,20 +1,28 @@
+import constants
 import utils
 
 
 def farm_diagonal_pattern(plants):
 	def choose_plant():
 		current = utils.get_state()
-		x, y = current['x'], current['y']
+		x, y = current["x"], current["y"]
 		current_plant = plants[(x + y) % len(plants)]
 		utils.prepare_terrain(current_plant)
 		plant(current_plant)
-	utils.serpentine_rectangle([utils.harvest_if_ready, choose_plant])
+
+	utils.serpentine_rectangle([
+		utils.water_soil,
+		utils.harvest_if_ready,
+		choose_plant,
+	])
+
 
 def get_pumpkin():
 	def plant_pumpkin():
 		utils.prepare_terrain(Entities.Pumpkin)
 		plant(Entities.Pumpkin)
-	withered = utils.serpentine_rectangle([plant_pumpkin])
+
+	withered, _ = utils.serpentine_rectangle([harvest, plant_pumpkin])
 	while withered:
 		x, y = withered.pop(0)
 		utils.move_to_position(x, y)
@@ -22,4 +30,26 @@ def get_pumpkin():
 			plant_pumpkin()
 			withered.append((x, y))
 	harvest()
-	
+
+
+def get_energy():
+	def plant_sunflower():
+		utils.prepare_terrain(Entities.Sunflower)
+		plant(Entities.Sunflower)
+
+	_, sunflowers_map = utils.serpentine_rectangle([harvest, plant_sunflower])
+
+	start = get_time()
+	while (
+		get_time() - start
+		< constants.ENTITIES_LIMITS[Entities.Sunflower]["min_growth_time"]
+	):
+		print("They are growing :)")
+		pet_the_piggy()
+
+	while sunflowers_map:
+		max_petals = max(sunflowers_map)
+		coords = sunflowers_map.pop(max_petals)
+		for x, y in coords:
+			utils.move_to_position(x, y)
+			harvest()
