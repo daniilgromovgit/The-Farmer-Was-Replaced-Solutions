@@ -37,7 +37,7 @@ def get_energy():
 		utils.prepare_terrain(Entities.Sunflower)
 		plant(Entities.Sunflower)
 
-	_, sunflowers_map = utils.serpentine_rectangle([harvest, plant_sunflower])
+	_, sunflowers_map = utils.serpentine_rectangle([harvest, plant_sunflower, measure])
 
 	start = get_time()
 	while (
@@ -53,3 +53,37 @@ def get_energy():
 		for x, y in coords:
 			utils.move_to_position(x, y)
 			harvest()
+
+
+def polyculture_farming():
+	POLYCULTURE_PLANTS = [
+		Entities.Grass,
+		Entities.Bush,
+		Entities.Tree,
+		Entities.Carrot,
+	]
+
+	def plant_random_culture():
+		current_plant = POLYCULTURE_PLANTS[
+			random() * len(POLYCULTURE_PLANTS) // 1
+		]
+		utils.prepare_terrain(current_plant)
+		plant(current_plant)
+
+	def get_companion_and_coords():
+		while "we have not found a companion":
+			companion = get_companion()
+			if companion:
+				return companion
+			harvest()  # Может и пустая лишнее действие
+			plant_random_culture()
+
+	def plant_companion():
+		companion, coords = get_companion_and_coords()
+		x, y = coords
+		utils.move_to_position(x, y)
+		utils.prepare_terrain(companion)
+		utils.harvest_if_ready()
+		plant(companion)
+
+	plant_companion()

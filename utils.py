@@ -35,12 +35,12 @@ def serpentine_rectangle(actions=None, columns=None, rows=None):
             path.append((state["x"], state["y"]))
             if actions:
                 for action in actions:
-                    action()
-                    stat = measure()
-            if stat in stats:
-                stats[stat].append((state["x"], state["y"]))
-            else:
-                stats[stat] = [(state["x"], state["y"])]
+                    status = action()
+                    if status:
+                        if status in stats:
+                            stats[status].append((state["x"], state["y"]))
+                        else:
+                            stats[status] = [(state["x"], state["y"])]
             if i % 2 == 0:
                 move(North)
             else:
